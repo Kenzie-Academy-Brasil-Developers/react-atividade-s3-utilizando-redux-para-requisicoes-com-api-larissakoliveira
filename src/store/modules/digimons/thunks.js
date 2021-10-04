@@ -4,9 +4,13 @@ import { addDigimon } from './actions';
 const addDigimonsThunk = (digimon, setError, setIsLoading) => (dispatch) => {
  setIsLoading(true);
  axios
- .get(`https://digimon-api.vercel.app/api/digimon/`)
+ .get('https://digimon-api.vercel.app/api/digimon/')
  .then((response)=>{
-     dispatch(addDigimon(response.data[0].name));
+     console.log(response.data[0])
+     const filteredDigimon = response.data[0].filter((item)=>item.name.toLowerCase().includes(digimon.toLowerCase()) ||
+     item.level.toLowerCase().includes(digimon.toLowerCase())
+     );
+     dispatch(addDigimon(filteredDigimon.name));
      setIsLoading(false);
  })
  .catch((e)=>{
